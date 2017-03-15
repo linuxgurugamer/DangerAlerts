@@ -9,6 +9,7 @@ using KSP;
 using UnityEngine;
 using System.IO;
 using System.Reflection;
+using KSP.UI.Screens;
 
 namespace DangerAlerts
 {
@@ -98,15 +99,20 @@ namespace DangerAlerts
         public void GuiOn()
         {
             visible = true;
-            RenderingManager.AddToPostDrawQueue(42, Ondraw);
+            //RenderingManager.AddToPostDrawQueue(42, Ondraw);
         }
 
         public void GuiOff()
         {
             visible = false;
-            RenderingManager.RemoveFromPostDrawQueue(42, Ondraw);
+            //RenderingManager.RemoveFromPostDrawQueue(42, Ondraw);
         }
 
+        private void OnGUI()
+        {
+            if (visible)
+                Ondraw();
+        }
         void Ondraw()
         {
             if (visible)

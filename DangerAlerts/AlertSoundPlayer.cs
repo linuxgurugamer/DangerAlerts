@@ -14,7 +14,7 @@ namespace DangerAlerts
     class AlertSoundPlayer
     {
         public GameObject dangeralertplayer = new GameObject("dangeralertplayer"); //Makes the GameObject
-        public AudioSource source; //The source to be added to the object
+        public FXGroup source; //The source to be added to the object
         public AudioClip loadedClip;
 
         public void PlaySound()
@@ -34,7 +34,7 @@ namespace DangerAlerts
         {
             if (source != null)
             {
-                return source.isPlaying;
+                return source.audio.isPlaying;
             }
             else
             {
@@ -44,13 +44,14 @@ namespace DangerAlerts
         public void Initialize(string soundPath)
         {
             //Initializing stuff;
-            dangeralertplayer = new GameObject("dangeralertplayer");
-            source = dangeralertplayer.AddComponent<AudioSource>();
+           // dangeralertplayer = new GameObject("dangeralertplayer");
+           source = new FXGroup("dangeralertplayer");
+            source.audio = dangeralertplayer.AddComponent<AudioSource>();
             loadedClip = GameDatabase.Instance.GetAudioClip(soundPath);
             Debug.Log("[DNGRALT] Did file stuff.");
 
-            source.volume = 0.5f; //Volume can be changed, and probably should be. Add toolbar volume slider? TODO
-            source.panLevel = 0; //Forces the sound to go 2D, to not decay over distance.
+            source.audio.volume = 0.5f; //Volume can be changed, and probably should be. Add toolbar volume slider? TODO
+            source.audio.spatialBlend = 0; //Forces the sound to go 2D, to not decay over distance.
             Debug.Log("[DNGRALT] Initialized Danger Alert Player");
         }
         
