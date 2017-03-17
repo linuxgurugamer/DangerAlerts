@@ -30,25 +30,25 @@ namespace DangerAlerts
 
         private string optionFilePath = KSPUtil.ApplicationRootPath + "GameData/DangerAlerts/options.cfg"; //File path
 
-        public bool MasterToggle = true; //Master toggle shouldn't be persistent, wouldn't want people turning it off, then filing
+        //public bool MasterToggle = true; //Master toggle shouldn't be persistent, wouldn't want people turning it off, then filing
                                          //a bug report :)
 
-        [Persistent] public bool SoundToggle = true;
-        [Persistent] public float MasterVolume = 0.5f;
+        //[Persistent] public bool SoundToggle = true;
+       // [Persistent] public float MasterVolume = 0.5f;
         [Persistent] public GUIWindow Window = GUIWindow.OPTIONS;
 
         [Persistent] private string cfgVersionLoaded = DangerAlertUtils.Version;
 
-        public Rect GUIPosition = new Rect();
- 
+        public const int WIDTH = 450;
+        private const int HEIGHT = 400;
+
+        public Rect GUIPosition = new Rect(Screen.width / 2 - WIDTH / 2, Screen.height / 2 - HEIGHT / 2, WIDTH, HEIGHT);
+
 
 
         public void UpdateFromGui(DangerAlertGUI gui)
             //Updates all the setting classes variables from a DangerAlertGUI's textbox values.
         {
-            MasterToggle = gui.masterToggle;
-            MasterVolume = gui.VolumeSlider;
-            SoundToggle = gui.soundToggle;
             Window = gui.Window;
 
             GUIPosition = gui.GetPosition();

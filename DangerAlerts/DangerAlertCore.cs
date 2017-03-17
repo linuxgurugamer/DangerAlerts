@@ -39,9 +39,9 @@ namespace DangerAlerts
 
             GameEvents.onGamePause.Add(OnPause);
             GameEvents.onGameUnpause.Add(OnUnpause);
-
+            
         }
-
+     
         void OnPause()
         {
             Paused = true;
@@ -60,14 +60,14 @@ namespace DangerAlerts
 
         void Update()
         {
-            if (DangerAlertSettings.Instance.MasterToggle)
+            if (HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().masterToggle)
             {
                 if (HighLogic.LoadedSceneIsFlight && !Paused)
                 {
                     Vessel currentVessel = FlightGlobals.ActiveVessel;
-                    soundActive = dangerAlertGui.soundToggle;
+                    soundActive = HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().soundToggle;
 
-                    soundplayer.SetVolume(DangerAlertSettings.Instance.MasterVolume);
+                    soundplayer.SetVolume(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().masterVolume);
 
                     inDanger = false;
                     foreach (AlertBase alert in DangerAlertList.Instance.AlertList)

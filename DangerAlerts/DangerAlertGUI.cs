@@ -25,25 +25,6 @@ namespace DangerAlerts
     {
         public GUIWindow Window = GUIWindow.OPTIONS;
 
-        private float GUIWindowWidth = 450f;
-
-        public bool masterToggle = DangerAlertSettings.Instance.MasterToggle;
-
-        public bool soundToggle = DangerAlertSettings.Instance.SoundToggle; //The toggle boolean for "disable all sound", 
-                                                                            //currently the only toggle (v1.1), now only toggles sound
-
-        private float volumeSlider = DangerAlertSettings.Instance.MasterVolume;
-
-        public float VolumeSlider { get { return volumeSlider; } }
-
-        string collisionTolerance = "7";
-
-        string collisionMinimumSpeed = "10";
-
-        string collisionMinimumVerticalSpeed = "-2";
-
-        bool collisionEnabled = true;
-
         int resourceIndex = 0;
 
         string resourceName = "ElectricCharge";
@@ -78,10 +59,10 @@ namespace DangerAlerts
 
             DangerAlertSettings.Instance.UpdateFromGui(this);
 
-            collisionTolerance = DangerAlertList.Instance.CollisionAlertList.First().Tolerance.ToString(); //that's a mouthful
-            collisionMinimumSpeed = DangerAlertList.Instance.CollisionAlertList.First().MinimumSpeed.ToString();
-            collisionMinimumVerticalSpeed = DangerAlertList.Instance.CollisionAlertList.First().MinimumVerticalSpeed.ToString();
-            collisionEnabled = DangerAlertList.Instance.CollisionAlertList.First().Enabled; //This chunk of code is ugly. I should see about cleaning
+            //collisionTolerance = DangerAlertList.Instance.CollisionAlertList.First().Tolerance.ToString(); //that's a mouthful
+            // collisionMinimumSpeed = DangerAlertList.Instance.CollisionAlertList.First().MinimumSpeed.ToString();
+            // collisionMinimumVerticalSpeed = DangerAlertList.Instance.CollisionAlertList.First().MinimumVerticalSpeed.ToString();
+            //collisionEnabled = DangerAlertList.Instance.CollisionAlertList.First().Enabled; //This chunk of code is ugly. I should see about cleaning
         }
 
         public void InDanger(bool danger)
@@ -99,288 +80,134 @@ namespace DangerAlerts
         public void GuiOn()
         {
             visible = true;
-            //RenderingManager.AddToPostDrawQueue(42, Ondraw);
+            Add();
         }
 
         public void GuiOff()
         {
             visible = false;
-            //RenderingManager.RemoveFromPostDrawQueue(42, Ondraw);
+        }
+        public List<string> resourceList = new List<string>();
+
+        public void Add()
+        {
+            resourceList = new List<string>();
+            foreach (Part p in FlightGlobals.ActiveVessel.Parts)
+            {
+                foreach (PartResource r in p.Resources)
+                {
+                    if (!resourceList.Contains(r.resourceName))
+                        resourceList.Add(r.resourceName);
+                }
+            }
+
         }
 
         private void OnGUI()
         {
             if (visible)
-                Ondraw();
-        }
-        void Ondraw()
-        {
-            if (visible)
             {
-                windowPosition = GUILayout.Window(10, windowPosition, OnWindow, "Danger Alerts v1.1");
-
+                windowPosition = GUILayout.Window(10, windowPosition, OnWindow, "Danger Alerts");
                 DangerAlertSettings.Instance.UpdateFromGui(this);
             }
+                
         }
 
         void OnWindow(int windowId)
         {
             if (visible)
             {
-                //I'm sad that this might be obsolete once 1.1 hits, but hey, I need it for now...
-                GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-                if(GUILayout.Button("Options"))
-                {
-                    Window = GUIWindow.OPTIONS;
-                }
-
-                else if (GUILayout.Button("Collision"))
-                {
-                    Window = GUIWindow.COLLISION;
-                }
-
-                else if (GUILayout.Button("Resources"))
-                {
-                    Window = GUIWindow.RESOURCE;
-                }
-
-                GUILayout.EndHorizontal();
-
-                ShowCurrentGUI();
-                    
-
+                ShowResourceGUI();
                 GUI.DragWindow();
             }
         }
 
-        void ShowCurrentGUI()
-        {
-            switch (Window)
-            {
-                case GUIWindow.OPTIONS:
-                    ShowOptionsGUI();
-                    break;
-
-                case GUIWindow.COLLISION:
-                    ShowCollisionGUI();
-                    break;
-                
-                case GUIWindow.RESOURCE:
-                    ShowResourceGUI();
-                    break;
-
-                default:
-                    ShowOptionsGUI();
-                    break;
-            }
-        }
-
-        void ShowOptionsGUI()
-        {
-
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-            GUILayout.Label("Sound Toggle");
-            soundToggle = GUILayout.Toggle(soundToggle, "");
-
-            GUILayout.FlexibleSpace();
-
-            GUILayout.Label("Master Toggle, disables all checks:");
-            masterToggle = GUILayout.Toggle(masterToggle, "");
-
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-            GUILayout.Label("Master Volume:");
-
-            volumeSlider = GUILayout.HorizontalSlider(volumeSlider, 0f, 1f);
-
-            GUILayout.EndHorizontal();
-        }
-
-        void ShowCollisionGUI()
-        {
-            //This class contains a bunch of GUILayout calls, so I don't have to cram everything into ShowCurrentGUI.
-
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-            GUILayout.Label("Tolerance:");
-
-            collisionTolerance = GUILayout.TextField(collisionTolerance, 3);
-
-            GUILayout.FlexibleSpace();
-
-            GUILayout.Label("Min Speed:");
-
-            collisionMinimumSpeed = GUILayout.TextField(collisionMinimumSpeed, 3);
-
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-            GUILayout.Label("Min Vertical Speed:");
-
-            collisionMinimumVerticalSpeed = GUILayout.TextField(collisionMinimumVerticalSpeed, 3);
-
-            GUILayout.FlexibleSpace();
-
-            GUILayout.Label("Alarm Enabled");
-
-            collisionEnabled = GUILayout.Toggle(collisionEnabled, "");
-
-            GUILayout.EndHorizontal();
-
-
-            CollisionAlert collisionAlert = DangerAlertList.Instance.CollisionAlertList.First();
-
-            collisionAlert.Tolerance = Int32.Parse(collisionTolerance);
-
-            collisionAlert.MinimumSpeed = Int32.Parse(collisionMinimumSpeed);
-
-            collisionAlert.MinimumVerticalSpeed = Int32.Parse(collisionMinimumVerticalSpeed);
-
-            collisionAlert.Enabled = collisionEnabled;
-
-            CollisionValueCheck();
-
-        }
+        Vector2 scrollPos;
+        ResourceAlert resourceAlert;
+        GUIStyle buttonStyle;
+        GUIStyle toggleStyle;
+        GUIStyle textFieldStyle;
+        ResourceAlert toDel;
 
         void ShowResourceGUI()
         {
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
+            buttonStyle = new GUIStyle(GUI.skin.button);
+            toggleStyle = new GUIStyle(GUI.skin.toggle);
+            textFieldStyle = new GUIStyle(GUI.skin.textField);
 
-            GUILayout.Space(100f);
+            toDel = null;
 
-            if (resourceIndex != 0)
-            {
-                if (GUILayout.Button("<"))
-                {
-                    resourceIndex--;
-                    UpdateResourceAlertVariables();
-                }
-            }
-
-            GUILayout.Label("Alert (" + (resourceIndex + 1).ToString() + "/" + DangerAlertList.Instance.ResourceAlertList.Count + ")"); 
-            // The reason for the + 1 is because most people don't use zero index :)
-
-            if ((resourceIndex + 1) < DangerAlertList.Instance.ResourceAlertList.Count)
-            {
-                if (GUILayout.Button(">"))
-                {
-                    resourceIndex++;
-                    UpdateResourceAlertVariables();
-                }
-            }
-
-            if (GUILayout.Button("Add"))
+            GUILayout.BeginHorizontal(GUILayout.Width(DangerAlertSettings.WIDTH));
+            if (GUILayout.Button("Add Resource"))
             {
                 DangerAlertList.Instance.AddAlert(new ResourceAlert("ElectricCharge", 20));
                 resourceIndex = DangerAlertList.Instance.ResourceAlertList.Count - 1; //sets index to last one
             }
-
-            if (DangerAlertList.Instance.ResourceAlertList.Count > 0)
-            {
-                if (GUILayout.Button("Remove"))
-                {
-                    if (resourceIndex > 0)
-                    {
-                        resourceIndex--;
-                    }
-                    DangerAlertList.Instance.RemoveAlert(DangerAlertList.Instance.ResourceAlertList[resourceIndex]);
-                }
-            }
-
-            GUILayout.Space(100f);
-
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal(GUILayout.Width(GUIWindowWidth));
-
-            if (DangerAlertList.Instance.ResourceAlertList.Count == 0)
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Resource", GUILayout.Width(120));
+            GUILayout.Space(50);
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("%", GUILayout.Width(35));
+            GUILayout.Space(100);
+            GUILayout.EndHorizontal();
+            scrollPos = GUILayout.BeginScrollView(scrollPos);
+            for (int i = 0; i < DangerAlertList.Instance.ResourceAlertList.Count; i++)
             {
-                GUILayout.Label("There are currently no Resource Alerts.");
-                GUILayout.EndHorizontal();
-            }
-            else
-            {
-                // Add alert modifying code here
-                GUILayout.Label("Resource");
-                resourceName = GUILayout.TextField(resourceName, 35);
+                
+                GUILayout.BeginHorizontal();
+                resourceAlert = DangerAlertList.Instance.ResourceAlertList[i];
+                if (resourceAlert.Enabled)
+                {
+                    buttonStyle.normal.textColor = Color.green;
+                    toggleStyle.normal.textColor = Color.green;
+                    textFieldStyle.normal.textColor = Color.green;
+                }
+                else
+                {
+                    buttonStyle.normal.textColor = Color.red;
+                    toggleStyle.normal.textColor = Color.red;
+                    textFieldStyle.normal.textColor = Color.red;
 
+                }
+                GUILayout.Label(resourceAlert.ResourceString, textFieldStyle, GUILayout.Width(120));
+                if (GUILayout.Button("<", GUILayout.Width(20)))
+                {
+                    int x = resourceList.FindIndex(s => s == resourceAlert.ResourceString);
+                    if (x == 0)
+                        x = resourceList.Count - 1;
+                    else
+                        x--;
+                    resourceAlert.ResourceString = resourceList[x];
+                }
+                if (GUILayout.Button(">", GUILayout.Width(20)))
+                {
+                    int x = resourceList.FindIndex(s => s == resourceAlert.ResourceString);
+                    if (x ==resourceList.Count - 1)
+                        x = 0;
+                    else
+                        x++;
+                    resourceAlert.ResourceString = resourceList[x];
+                }
                 GUILayout.FlexibleSpace();
 
-                GUILayout.Label("Percentage Limit");
-                resourcePercentage = GUILayout.TextField(resourcePercentage, 4);
+                float f = resourceAlert.Percentage;
+                GUILayout.Label(f.ToString() + "%", GUILayout.Width(35));
+                f = GUILayout.HorizontalSlider(f, 0f, 99f, GUILayout.Width(100));
+                resourceAlert.Percentage = (int)f;
+                resourceAlert.Enabled = GUILayout.Toggle(resourceAlert.Enabled, "", toggleStyle);
+                GUILayout.Space(5);
+                if (GUILayout.Button("X", GUILayout.Width(20))) 
+                    toDel = resourceAlert;
+                GUILayout.Space(5);
 
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
-
-                GUILayout.Label("Alarm Enabled");
-                resourceEnabled = GUILayout.Toggle(resourceEnabled, "");
-
-                GUILayout.EndHorizontal();
-
-                if (ResourceValueCheck())
-                {
-                    DangerAlertUtils.Log("A value was changed in the Resource GUI to meet boundaries.");
-                }
-
-                ResourceAlert resourceAlert = DangerAlertList.Instance.ResourceAlertList[resourceIndex];
-
-                resourceAlert.Enabled = resourceEnabled;
-
-                resourceAlert.Percentage = Int32.Parse(resourcePercentage);
-
-                resourceAlert.ResourceString = resourceName;
             }
-
-        }
-
-        void CollisionValueCheck()
-        {
-            //Simple sanity check function, checks if the field is a possible value, if not, defaults to one.
-            //This can be annoying when you're trying to type in a new value, and should be replaced by a different
-            //system once KSP v1.1 hits, so I can know what I'm actually doing with the GUI then.
-            if (Window == GUIWindow.COLLISION && visible)
-            {
-                try
-                {
-                    if (Int32.Parse(collisionTolerance) < 1)
-                    {
-                        collisionTolerance = "1";
-                    }
-                }
-                catch (FormatException e)
-                {
-                    collisionTolerance = "1";
-                }
-                try
-                {
-                    if (Int32.Parse(collisionMinimumVerticalSpeed) > -1)
-                    {
-                        collisionMinimumVerticalSpeed = "-1";
-                    }
-                }
-                catch (FormatException e)
-                {
-                    collisionMinimumVerticalSpeed = "-1";
-                }
-                try
-                {
-                    if (Int32.Parse(collisionMinimumSpeed) < 0)
-                    {
-                        collisionMinimumSpeed = "0";
-                    }
-                }
-                catch (FormatException e)
-                {
-                    collisionMinimumSpeed = "0";
-                }
-            }
+            GUILayout.EndScrollView();
+            if (toDel != null)
+                DangerAlertList.Instance.ResourceAlertList.Remove(toDel);
         }
 
         bool ResourceValueCheck()
@@ -407,7 +234,7 @@ namespace DangerAlerts
             }
 
             return changed;
-         }
+        }
 
         void UpdateResourceAlertVariables()
         {

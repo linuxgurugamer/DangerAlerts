@@ -60,18 +60,7 @@ namespace DangerAlerts
             {
                 return true;
             }
-#if false
-            foreach (Vessel.ActiveResource res in currentVessel.GetActiveResources())
-            {
-                if (res.info.name.ToUpper() == ResourceString.ToUpper())
-                {
-                    if (res.amount < res.maxAmount * (Percentage * 0.01))
-                    {
-                        return true;
-                    }
-                }
-            }
-#endif
+
             return false;
         }
 

@@ -46,6 +46,7 @@
     <Compile Include="DangerAlertUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAlert.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -82,10 +83,11 @@ if %25textTemplatingPath%25=="\Microsoft Shared\TextTemplating\$(VisualStudioVer
 %25textTemplatingPath%25 "$(ProjectDir)AssemblyVersion.tt"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>start /D D:\Users\jbb\github\DangerAlerts /WAIT deploy.bat
+    <PostBuildEvent>start /D D:\Users\jbb\github\DangerAlerts  /WAIT deploy.bat
+
 
 if $(ConfigurationName) == Release (
-start /D D:\Users\jbb\github\DangerAlerts /WAIT buildRelease.bat
+ start /D D:\Users\jbb\github\DangerAlerts  /WAIT buildRelease.bat
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

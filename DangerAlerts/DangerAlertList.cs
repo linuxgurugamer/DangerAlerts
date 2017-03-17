@@ -92,7 +92,9 @@ namespace DangerAlerts
         private void SetToDefault()
         {
             DangerAlertUtils.Log("Alerts being set to default; probably due to first start-up");
-            AddAlert(new CollisionAlert(7, 10, -2));
+            AddAlert(new CollisionAlert(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionTolerance,
+                HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionMinimumSpeed,
+                HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionMinimumVerticalSpeed));
         }
 
     }

@@ -11,6 +11,10 @@ CHANGELOG (Linuxgurugamer updates)
 	Added code to put version into assembly file
 	Added .version file
 	Added build scripts
+	Reorganized file locations
+
+1.3.1
+	Totally rewrote ui, now more intuitive
 
 
 
