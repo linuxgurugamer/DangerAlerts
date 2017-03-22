@@ -45,6 +45,8 @@ namespace DangerAlerts
         void OnPause()
         {
             Paused = true;
+            if (soundplayer == null)
+                return;
             if (soundplayer.SoundPlaying())
             {
                 soundplayer.StopSound();

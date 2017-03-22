@@ -15,7 +15,10 @@ CHANGELOG (Linuxgurugamer updates)
 
 1.3.1
 	Totally rewrote ui, now more intuitive
+	Moved settings into standard settings page
 
+1.3.2
+	Fixed null ref when occured when starting game
 
 
 CHANGELOG (from Norpo):
