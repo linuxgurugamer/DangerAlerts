@@ -6,6 +6,9 @@ with landing.
 
 CHANGELOG (Linuxgurugamer updates)
 
+1.4.0
+	Updated for 1.3
+
 1.3:
 	Updated for 1.2.2
 	Added code to put version into assembly file
