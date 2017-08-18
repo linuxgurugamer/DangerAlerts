@@ -8,21 +8,26 @@ using System.Text;
 
 namespace DangerAlerts
 {
-    [Serializable]
+ //   [Serializable]
     class ResourceAlert : AlertBase
     {
 
         public string ResourceString;
         public int Percentage;
+        public string alertSound;
 
+        // This commented out code may be used in the future to have specific alerts for 
+        // individual ships
 
-        private HashSet<Part> activeStageParts = new HashSet<Part>();
-        private PartSet partSet = null;
+#if false
+         private HashSet<Part> activeStageParts = new HashSet<Part>();
+         private PartSet partSet = null;
+
 
         private bool stagePartsChanged = true;
         public void ClearActiveStageParts()
         {
-            activeStageParts.Clear();
+            //activeStageParts.Clear();
             stagePartsChanged = true;
         }
 
@@ -41,12 +46,17 @@ namespace DangerAlerts
                 stagePartsChanged = false;
             }
         }
+#endif
+        public override string Sound()
+        {
+            return alertSound;
+        }
 
-
-        public ResourceAlert(string resourceString, byte percentage)
+        public ResourceAlert(string resourceString, byte percentage, string sound)
         {
             ResourceString = resourceString;
             Percentage = percentage;
+            alertSound = sound;
             priority = AlertPriorities.HIGH;
         }
 
@@ -63,7 +73,5 @@ namespace DangerAlerts
 
             return false;
         }
-
-
     }
 }

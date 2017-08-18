@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 namespace DangerAlerts
 {
-    [Serializable]
+//    [Serializable]
     class DangerAlertList
     {
         private static DangerAlertList instance = null;
@@ -28,8 +28,6 @@ namespace DangerAlerts
             }
         }
 
-        private string alertPath { get { return KSPUtil.ApplicationRootPath + "GameData/DangerAlerts/alerts.dat"; } } //alerts.dat path
-
         public List<AlertBase> AlertList = new List<AlertBase>();
 
         public List<CollisionAlert> CollisionAlertList = new List<CollisionAlert>();
@@ -43,11 +41,11 @@ namespace DangerAlerts
 
             if (alert is CollisionAlert)
             {
-                CollisionAlertList.Add((CollisionAlert) alert);
+                CollisionAlertList.Add((CollisionAlert)alert);
             }
             else if (alert is ResourceAlert)
             {
-                ResourceAlertList.Add((ResourceAlert) alert);
+                ResourceAlertList.Add((ResourceAlert)alert);
             }
         }
 
@@ -57,22 +55,22 @@ namespace DangerAlerts
 
             if (alert is CollisionAlert)
             {
-                CollisionAlertList.Remove((CollisionAlert) alert);
+                CollisionAlertList.Remove((CollisionAlert)alert);
             }
             else if (alert is ResourceAlert)
             {
-                ResourceAlertList.Remove((ResourceAlert) alert);
+                ResourceAlertList.Remove((ResourceAlert)alert);
             }
         }
-
+#if false
         public void UpdateAlertsFromDat()
         {
             IFormatter formatter = new BinaryFormatter();
             try
             {
-            Stream stream = new FileStream(alertPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            instance = (DangerAlertList)formatter.Deserialize(stream);
-            stream.Close();
+                Stream stream = new FileStream(alertPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                instance = (DangerAlertList)formatter.Deserialize(stream);
+                stream.Close();
             }
             catch //I don't know anymore!
             {
@@ -88,7 +86,7 @@ namespace DangerAlerts
             formatter.Serialize(stream, instance);
             stream.Close();
         }
-
+#endif
         private void SetToDefault()
         {
             DangerAlertUtils.Log("Alerts being set to default; probably due to first start-up");

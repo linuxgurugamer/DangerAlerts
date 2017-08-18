@@ -1,0 +1,10 @@
+1.4.1
+	Added button to SpaceCenter screen
+	Added sound selection to window for both descent speed and for each resource
+	Added several sounds to the file
+	Removed old unnecessary code
+	Change resource saves from XML to standard .cfg file
+	Removed options.cfg, the file can be deleted
+	Fixed volume setting
+	Added preview button for sound
+	Added sound for post crash

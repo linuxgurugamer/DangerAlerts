@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{1844186C-9C68-4563-A973-B2234B5A1B7B}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		Changelog.txt = Changelog.txt
 		DangerAlerts.version = DangerAlerts.version
 		deploy.bat = deploy.bat
 		LICENSE.txt = LICENSE.txt

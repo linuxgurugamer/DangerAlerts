@@ -12,11 +12,17 @@ using System.IO;
 
 namespace DangerAlerts
 {
-    [KSPAddon(KSPAddon.Startup.Flight, false)] //Starts on flight
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
     public class DangerAlertCore : MonoBehaviour
     {
-        private string normalAlert = "DangerAlerts/Sounds/normalAlert";
-        AlertSoundPlayer soundplayer = new AlertSoundPlayer();
+        internal static DangerAlertCore Instance;
+        internal static string ROOT_PATH = KSPUtil.ApplicationRootPath;
+        internal static string GAMEDATA_FOLDER = ROOT_PATH + "GameData/";
+
+        internal const string SOUND_DIR = "DangerAlerts/Sounds/";
+        internal static string defaultAlert = "normalAlert";
+        internal static string normalAlert = "normalAlert";
+        internal AlertSoundPlayer soundplayer = new AlertSoundPlayer();
         DangerAlertGUI dangerAlertGui;
 
         private bool inDanger = false;
@@ -29,19 +35,28 @@ namespace DangerAlerts
 
         void Start()
         {
+            Instance = this;
             Debug.Log("[DNGRALT] Danger Alerts started."); //Lets the user know the add-on was started, DEBUG
-            Debug.Log("[DNGRALT] Sound file exists: " + GameDatabase.Instance.ExistsAudioClip(normalAlert));
-            soundplayer.Initialize(normalAlert); // Initializes the player, does some housekeeping
-
-            DangerAlertSettings.Instance.UpdateFromCfg();
+            Debug.Log("[DNGRALT] Sound file exists: " + GameDatabase.Instance.ExistsAudioClip(SOUND_DIR + normalAlert));
+            soundplayer.Initialize(SOUND_DIR + normalAlert); // Initializes the player, does some housekeeping
 
             dangerAlertGui = gameObject.AddComponent<DangerAlertGUI>();
 
             GameEvents.onGamePause.Add(OnPause);
             GameEvents.onGameUnpause.Add(OnUnpause);
-            
+            GameEvents.onCrash.Add(onCrash);
+
         }
-     
+
+        void onCrash(EventReport evtRpt)
+        {
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().postCrashSound)
+                return;
+            string PostCrashSound = "FlatlineDeathSound";
+            DangerAlertCore.Instance.soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + PostCrashSound, true);
+            DangerAlertCore.Instance.soundplayer.PlaySound(true); //Plays sound
+        }
+
         void OnPause()
         {
             Paused = true;
@@ -58,7 +73,7 @@ namespace DangerAlerts
             Paused = false;
         }
 
-        
+
 
         void Update()
         {
@@ -79,13 +94,16 @@ namespace DangerAlerts
                             if (!AlarmActive) //alarmActive is to make it so the plugin doesn't keep spamming sound
                             {
                                 AlarmActive = true;
+                                soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + alert.Sound(), HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().resourceAlertCnt);
+
                                 dangerAlertGui.InDanger(true);
                             }
-                            if (!soundplayer.SoundPlaying()) //If the sound isn't playing, play the sound.
+                            if (soundplayer != null && !soundplayer.SoundPlaying()) //If the sound isn't playing, play the sound.
                             {
                                 if (soundActive)
                                 {
-                                    soundplayer.PlaySound(); //Plays sound
+                                    if (soundplayer.altSoundCount-- > 0)
+                                        soundplayer.PlaySound(true); //Plays sound
                                 }
                             }
 
@@ -106,11 +124,11 @@ namespace DangerAlerts
                 }
             }
         }
-
+#if false
         void OnDestroy()
         {
-            //When the core class is destroyed, save options to the cfg.
-            DangerAlertSettings.Instance.SaveCfg();
+
         }
+#endif
     }
 }

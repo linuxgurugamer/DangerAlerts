@@ -42,8 +42,8 @@
     <Compile Include="CollisionAlert.cs" />
     <Compile Include="DangerAlertCore.cs" />
     <Compile Include="DangerAlertGUI.cs" />
-    <Compile Include="DangerAlertSettings.cs" />
     <Compile Include="DangerAlertUtils.cs" />
+    <Compile Include="LocalSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAlert.cs" />
     <Compile Include="Settings.cs" />

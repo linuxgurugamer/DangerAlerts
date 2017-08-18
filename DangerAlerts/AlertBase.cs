@@ -16,7 +16,7 @@ namespace DangerAlerts
         MINOR
     }
 
-    [Serializable]
+    //[Serializable]
     abstract class AlertBase
     {
         public AlertPriorities priority = AlertPriorities.CRITICAL;
@@ -24,5 +24,7 @@ namespace DangerAlerts
         public bool Enabled = true;
 
         public abstract bool Triggered(Vessel currentVessel);
+
+        public abstract string Sound();
     }
 }

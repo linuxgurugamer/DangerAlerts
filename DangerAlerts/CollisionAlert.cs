@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DangerAlerts
 {
-    [Serializable]
+    //[Serializable]
     class CollisionAlert : AlertBase
     {
 
@@ -17,6 +17,11 @@ namespace DangerAlerts
             Tolerance = tolerance;
             MinimumSpeed = minimumSpeed;
             MinimumVerticalSpeed = minimumVerticalSpeed;
+        }
+
+        public override string Sound()
+        {
+            return DangerAlertCore.normalAlert;
         }
 
         public int Tolerance;

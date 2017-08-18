@@ -1,10 +1,10 @@
 ﻿{
   "NAME": "DangerAlerts",
-  "URL": "http://ksp-avc.cybutek.net/version.php?id=451",
+  "URL": "https://raw.githubusercontent.com/linuxgurugamer/DangerAlerts/master/DangerAlerts.version",
   "VERSION": {
     "MAJOR": 1,
     "MINOR": 4,
-    "PATCH": 0,
+    "PATCH": 1,
     "BUILD": 0
   },
   "KSP_VERSION": {

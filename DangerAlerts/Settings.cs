@@ -30,6 +30,9 @@ namespace DangerAlerts
         [GameParameters.CustomParameterUI("Master Toggle", toolTip = "Disables all checks")]
         public bool masterToggle = true;
 
+        [GameParameters.CustomParameterUI("Post crash sound", toolTip = "Play a sound after a crash")]
+        public bool postCrashSound = true;
+
         float masterVol = 0.5f;
         [GameParameters.CustomFloatParameterUI("Master Volume (%)", displayFormat = "N0", minValue = 0, maxValue = 100, stepCount = 1, asPercentage = false)]
         public float masterVolume
@@ -37,6 +40,10 @@ namespace DangerAlerts
             get { return masterVol * 100; }
             set { masterVol = value / 100.0f; }
         }
+
+        [GameParameters.CustomIntParameterUI("Resource alert count", minValue = 1, maxValue = 99,
+           toolTip = "Number of times to repeat the resource alert when resource drops low")]
+        public int resourceAlertCnt = 7;
 
 
         [GameParameters.CustomIntParameterUI("Tolerance", minValue = 1, maxValue = 99,
@@ -52,7 +59,8 @@ namespace DangerAlerts
 
         [GameParameters.CustomParameterUI("Alarm Enabled")]
         public bool collisionEnabled = true;
-        
+
+
 #if false
         public override void SetDifficultyPreset(GameParameters.Preset preset)
         {

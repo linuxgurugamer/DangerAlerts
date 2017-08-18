@@ -5,4 +5,4 @@ echo %H%
 
 copy DangerAlerts\bin\Debug\DangerAlerts.dll GameData\DangerAlerts\Plugins
 
-xcopy /y /s "GameData\DangerAlerts" "%H%\GameData\DangerAlerts"
+xcopy /y /i /e "GameData\DangerAlerts" "%H%\GameData\DangerAlerts"

@@ -11,20 +11,25 @@ using KSP;
 
 namespace DangerAlerts
 {
-    class AlertSoundPlayer
+    internal class AlertSoundPlayer
     {
         public GameObject dangeralertplayer = new GameObject("dangeralertplayer"); //Makes the GameObject
         public FXGroup source; //The source to be added to the object
         public AudioClip loadedClip;
+        public AudioClip alternativeClip;
+        public int altSoundCount;
 
-        public void PlaySound()
+        public void PlaySound(bool alternative = false)
         {
-            source.audio.clip = loadedClip;
+            if (alternative)
+                source.audio.clip = alternativeClip;
+            else
+                source.audio.clip = loadedClip;
             source.audio.Play();
         }
         public void SetVolume(float vol)
         {
-            source.audio.volume = vol;
+            source.audio.volume = vol / 100;            
         }
         public void StopSound()
         {
@@ -32,7 +37,7 @@ namespace DangerAlerts
         }
         public bool SoundPlaying() //Returns true if sound is playing, otherwise false
         {
-            if (source != null)
+            if (source != null && source.audio != null)
             {
                 return source.audio.isPlaying;
             }
@@ -40,6 +45,18 @@ namespace DangerAlerts
             {
                 return false;
             }
+        }
+        public void LoadNewSound(string soundPath, int cnt)
+        {
+            altSoundCount = cnt;
+            LoadNewSound(soundPath, true);
+        }
+        public void LoadNewSound(string soundPath, bool alternative = false)
+        {
+            if (alternative)
+                alternativeClip = GameDatabase.Instance.GetAudioClip(soundPath);
+            else
+                loadedClip = GameDatabase.Instance.GetAudioClip(soundPath);
         }
         public void Initialize(string soundPath)
         {
@@ -50,8 +67,8 @@ namespace DangerAlerts
             loadedClip = GameDatabase.Instance.GetAudioClip(soundPath);
             Debug.Log("[DNGRALT] Did file stuff.");
 
-            source.audio.volume = 0.5f; //Volume can be changed, and probably should be. Add toolbar volume slider? TODO
-            source.audio.spatialBlend = 0; //Forces the sound to go 2D, to not decay over distance.
+            source.audio.volume = 0.5f; 
+            source.audio.spatialBlend = 0;
             Debug.Log("[DNGRALT] Initialized Danger Alert Player");
         }
         
