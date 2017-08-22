@@ -74,13 +74,17 @@ namespace DangerAlerts
                     var resourceString = SafeLoad(entry.GetValue("resourceString"), "");
                     var percentage = int.Parse(SafeLoad(entry.GetValue("percentage"), 0));
                     var alertSound = SafeLoad(entry.GetValue("alertSound"), DangerAlertCore.normalAlert);
-                    
+
                     DangerAlertList.Instance.AddAlert(new ResourceAlert(resourceString, (byte)percentage, alertSound));
-                    
+
                 }
             }
-            else
+           // else
+            {
                 selectedSound = DangerAlertCore.normalAlert;
+                DangerAlertList.Instance.SetToDefault();
+                DangerAlertCore.Instance.soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + DangerAlertCore.normalAlert, false);
+            }
             
         }
     }

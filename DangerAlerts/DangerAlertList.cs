@@ -87,9 +87,9 @@ namespace DangerAlerts
             stream.Close();
         }
 #endif
-        private void SetToDefault()
+        internal void SetToDefault()
         {
-            DangerAlertUtils.Log("Alerts being set to default; probably due to first start-up");
+            Log.Info("Alerts being set to default; probably due to first start-up");
             AddAlert(new CollisionAlert(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionTolerance,
                 HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionMinimumSpeed,
                 HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().collisionMinimumVerticalSpeed));

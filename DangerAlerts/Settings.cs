@@ -43,7 +43,7 @@ namespace DangerAlerts
 
         [GameParameters.CustomIntParameterUI("Resource alert count", minValue = 1, maxValue = 99,
            toolTip = "Number of times to repeat the resource alert when resource drops low")]
-        public int resourceAlertCnt = 7;
+        public int resourceAlertRepetition = 7;
 
 
         [GameParameters.CustomIntParameterUI("Tolerance", minValue = 1, maxValue = 99,

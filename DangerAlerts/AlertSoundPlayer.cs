@@ -65,11 +65,11 @@ namespace DangerAlerts
            source = new FXGroup("dangeralertplayer");
             source.audio = dangeralertplayer.AddComponent<AudioSource>();
             loadedClip = GameDatabase.Instance.GetAudioClip(soundPath);
-            Debug.Log("[DNGRALT] Did file stuff.");
+            Log.Info("Did file stuff.");
 
             source.audio.volume = 0.5f; 
             source.audio.spatialBlend = 0;
-            Debug.Log("[DNGRALT] Initialized Danger Alert Player");
+            Log.Info("Initialized Danger Alert Player");
         }
         
     }

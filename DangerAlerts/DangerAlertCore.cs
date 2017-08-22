@@ -36,8 +36,8 @@ namespace DangerAlerts
         void Start()
         {
             Instance = this;
-            Debug.Log("[DNGRALT] Danger Alerts started."); //Lets the user know the add-on was started, DEBUG
-            Debug.Log("[DNGRALT] Sound file exists: " + GameDatabase.Instance.ExistsAudioClip(SOUND_DIR + normalAlert));
+            Log.Info("Danger Alerts started."); //Lets the user know the add-on was started, DEBUG
+            Log.Info("Sound file exists: " + GameDatabase.Instance.ExistsAudioClip(SOUND_DIR + normalAlert));
             soundplayer.Initialize(SOUND_DIR + normalAlert); // Initializes the player, does some housekeeping
 
             dangerAlertGui = gameObject.AddComponent<DangerAlertGUI>();
@@ -74,8 +74,8 @@ namespace DangerAlerts
         }
 
 
-
-        void Update()
+        // Use FixedUpdate since it is not called as often as the other Update functions
+        void FixedUpdate()
         {
             if (HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().masterToggle)
             {
@@ -94,7 +94,7 @@ namespace DangerAlerts
                             if (!AlarmActive) //alarmActive is to make it so the plugin doesn't keep spamming sound
                             {
                                 AlarmActive = true;
-                                soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + alert.Sound(), HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().resourceAlertCnt);
+                                soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + alert.Sound(), HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().resourceAlertRepetition);
 
                                 dangerAlertGui.InDanger(true);
                             }
@@ -103,7 +103,7 @@ namespace DangerAlerts
                                 if (soundActive)
                                 {
                                     if (soundplayer.altSoundCount-- > 0)
-                                        soundplayer.PlaySound(true); //Plays sound
+                                        soundplayer.PlaySound(); //Plays sound
                                 }
                             }
 
@@ -124,11 +124,5 @@ namespace DangerAlerts
                 }
             }
         }
-#if false
-        void OnDestroy()
-        {
-
-        }
-#endif
     }
 }

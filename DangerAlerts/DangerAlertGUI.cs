@@ -178,7 +178,7 @@ namespace DangerAlerts
                 if (GUILayout.Button("Play Alarm"))
                 {
                     DangerAlertCore.Instance.soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + lastSelectedSoundFile, true);
-                    DangerAlertCore.Instance.soundplayer.PlaySound(true); //Plays sound
+                    DangerAlertCore.Instance.soundplayer.PlaySound(); //Plays sound
                 }
             }
             else
@@ -394,6 +394,8 @@ namespace DangerAlerts
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Save and Close"))
             {
+
+                DangerAlertCore.Instance.soundplayer.LoadNewSound(DangerAlertCore.SOUND_DIR + DangerAlertCore.normalAlert, false);
                 SaveSettings();
                 GuiOff();
             }
@@ -441,7 +443,7 @@ namespace DangerAlerts
 
         void OnDestroy()
         {
-            DangerAlertUtils.Log("DangerAlertGUI is being destroyed");
+            Log.Info("DangerAlertGUI is being destroyed");
             ApplicationLauncher.Instance.RemoveModApplication(dangerAlertButton);
 
             SaveSettings();

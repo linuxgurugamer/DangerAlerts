@@ -8,3 +8,9 @@
 	Fixed volume setting
 	Added preview button for sound
 	Added sound for post crash
+
+1.4.2
+	Fixed name of Terrain Warning (had extra t)
+	Fixed collision alarm not sounding
+	Changed all Debug.Log to Log.Info, & added logging class
+	Renamed ResourceAlertCnt to ResourceAlertRepetation for better clarity
