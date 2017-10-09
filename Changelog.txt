@@ -14,3 +14,6 @@
 	Fixed collision alarm not sounding
 	Changed all Debug.Log to Log.Info, & added logging class
 	Renamed ResourceAlertCnt to ResourceAlertRepetation for better clarity
+
+1.4.3
+	Updated for KSP 1.3.1
