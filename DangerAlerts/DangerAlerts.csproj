@@ -87,12 +87,13 @@ set textTemplatingPath="%25ProgramFiles(x86)%25\Microsoft Visual Studio\2017\Com
 %25textTemplatingPath%25 "$(ProjectDir)AssemblyVersion.tt"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>start /D D:\Users\jbb\github\DangerAlerts  /WAIT deploy.bat
-
+    <PostBuildEvent>
+start /D D:\Users\jbb\github\DangerAlerts   /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
 
 if $(ConfigurationName) == Release (
- start /D D:\Users\jbb\github\DangerAlerts  /WAIT buildRelease.bat
-)</PostBuildEvent>
+	start /D D:\Users\jbb\github\DangerAlerts   /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
+)
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
