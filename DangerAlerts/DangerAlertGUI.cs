@@ -11,6 +11,9 @@ using System.IO;
 using System.Reflection;
 using KSP.UI.Screens;
 
+using ClickThroughFix;
+using ToolbarControl_NS;
+
 namespace DangerAlerts
 {
     enum GUIWindow
@@ -33,12 +36,14 @@ namespace DangerAlerts
 
         bool resourceEnabled = true;
 
-        private ApplicationLauncherButton dangerAlertButton;
+        //private ApplicationLauncherButton dangerAlertButton;
+        ToolbarControl toolbarControl;
+
         private Rect windowPosition = new Rect(Screen.width / 2 - WIDTH / 2, Screen.height / 2 - HEIGHT / 2, WIDTH, HEIGHT);
         private bool visible = false; //Inbuilt "visible" boolean, in case I need it for something else.
 
-        private Texture2D safeTexture;
-        private Texture2D dangerTexture;
+        //private Texture2D safeTexture;
+        //private Texture2D dangerTexture;
 
         string[] dirEntries;
         List<string> dirEntriesList;
@@ -47,6 +52,7 @@ namespace DangerAlerts
         void Start()
         {
             //Thank youuuuuu, github!
+#if false
             safeTexture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
             string safeTextureFile = KSPUtil.ApplicationRootPath + "GameData/DangerAlerts/Icons/safeicon.png";
             safeTexture.LoadImage(File.ReadAllBytes(safeTextureFile));
@@ -57,6 +63,19 @@ namespace DangerAlerts
 
             dangerAlertButton = ApplicationLauncher.Instance.AddModApplication(GuiOn, GuiOff, null, null, null, null,
                (ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW), safeTexture);
+#endif
+            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+            toolbarControl.AddToAllToolbars(GuiOn, GuiOff,
+                ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
+                "DangerAlerts_NS",
+                "dangerAlertButton",
+                "DangerAlerts/Icons/safeicon",
+                "DangerAlerts/Icons/dangericon",
+                "DangerAlerts/Icons/safeicon-24",
+                "DangerAlerts/Icons/dangericon_24",
+                "Danger Alerts"
+            );
+            toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().useBlizzy);
 
             var ls = new LocalSettings();
             ls.LoadSettings();
@@ -67,11 +86,13 @@ namespace DangerAlerts
         {
             if (danger)
             {
-                dangerAlertButton.SetTexture(dangerTexture);
+                //dangerAlertButton.SetTexture(dangerTexture);
+                toolbarControl.SetTexture("DangerAlerts/Icons/dangericon", "DangerAlerts/Icons/dangericon_24");
             }
             else
             {
-                dangerAlertButton.SetTexture(safeTexture);
+                //dangerAlertButton.SetTexture(safeTexture);
+                toolbarControl.SetTexture("DangerAlerts/Icons/safeicon", "DangerAlerts/Icons/safeicon_24");
             }
         }
 
@@ -118,9 +139,12 @@ namespace DangerAlerts
 
         private void OnGUI()
         {
+            if (toolbarControl != null)
+                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().useBlizzy);
+
             if (visible)
             {
-                windowPosition = GUILayout.Window(10, windowPosition, OnWindow, "Danger Alerts");
+                windowPosition = ClickThruBlocker.GUILayoutWindow(10, windowPosition, OnWindow, "Danger Alerts");
             }
         }
 
@@ -444,7 +468,9 @@ namespace DangerAlerts
         void OnDestroy()
         {
             Log.Info("DangerAlertGUI is being destroyed");
-            ApplicationLauncher.Instance.RemoveModApplication(dangerAlertButton);
+            //ApplicationLauncher.Instance.RemoveModApplication(dangerAlertButton);
+            toolbarControl.OnDestroy();
+            Destroy(toolbarControl);
 
             SaveSettings();
             //DangerAlertList.Instance.SaveAlertsDat();

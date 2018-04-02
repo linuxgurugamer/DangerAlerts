@@ -24,6 +24,9 @@ namespace DangerAlerts
         public override bool HasPresets { get { return false; } }
 
 
+        [GameParameters.CustomParameterUI("Use Blizzy Toolbar if available")]
+        public bool useBlizzy = false;
+
         [GameParameters.CustomParameterUI("Sound Toggle")]
         public bool soundToggle = true;
 
