@@ -24,6 +24,15 @@ namespace DangerAlerts
         RESOURCE
     }
 
+    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    public class RegisterToolbar : MonoBehaviour
+    {
+        void Start()
+        {
+            ToolbarControl.RegisterMod(DangerAlertGUI.MODID, DangerAlertGUI.MODNAME);
+        }
+    }
+
     class DangerAlertGUI : MonoBehaviour
     {
         public GUIWindow Window = GUIWindow.OPTIONS;
@@ -48,34 +57,24 @@ namespace DangerAlerts
         string[] dirEntries;
         List<string> dirEntriesList;
 
+        internal const string MODID = "DangerAlerts_NS";
+        internal const string MODNAME = "Danger Alerts";
 
         void Start()
         {
             //Thank youuuuuu, github!
-#if false
-            safeTexture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
-            string safeTextureFile = KSPUtil.ApplicationRootPath + "GameData/DangerAlerts/Icons/safeicon.png";
-            safeTexture.LoadImage(File.ReadAllBytes(safeTextureFile));
 
-            dangerTexture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
-            string dangerTextureFile = KSPUtil.ApplicationRootPath + "GameData/DangerAlerts/Icons/dangericon.png";
-            dangerTexture.LoadImage(File.ReadAllBytes(dangerTextureFile));
-
-            dangerAlertButton = ApplicationLauncher.Instance.AddModApplication(GuiOn, GuiOff, null, null, null, null,
-               (ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW), safeTexture);
-#endif
             toolbarControl = gameObject.AddComponent<ToolbarControl>();
             toolbarControl.AddToAllToolbars(GuiOn, GuiOff,
                 ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
-                "DangerAlerts_NS",
+                MODID,
                 "dangerAlertButton",
                 "DangerAlerts/Icons/safeicon",
                 "DangerAlerts/Icons/dangericon",
                 "DangerAlerts/Icons/safeicon-24",
                 "DangerAlerts/Icons/dangericon_24",
-                "Danger Alerts"
+                MODNAME
             );
-            toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().useBlizzy);
 
             var ls = new LocalSettings();
             ls.LoadSettings();
@@ -139,9 +138,6 @@ namespace DangerAlerts
 
         private void OnGUI()
         {
-            if (toolbarControl != null)
-                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().useBlizzy);
-
             if (visible)
             {
                 windowPosition = ClickThruBlocker.GUILayoutWindow(10, windowPosition, OnWindow, "Danger Alerts");

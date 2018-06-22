@@ -22,3 +22,8 @@
 	Updated for 1.4.1
 	Added support for the ClickThroughBlocker
 	Added support for the ToolbarController
+
+1.4.4.1
+	Updated to use latest ToolbarController
+	Removed blizzy option, now managed by ToolbarController
+	Added dependency checking

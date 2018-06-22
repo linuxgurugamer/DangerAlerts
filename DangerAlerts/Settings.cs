@@ -23,10 +23,6 @@ namespace DangerAlerts
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return false; } }
 
-
-        [GameParameters.CustomParameterUI("Use Blizzy Toolbar if available")]
-        public bool useBlizzy = false;
-
         [GameParameters.CustomParameterUI("Sound Toggle")]
         public bool soundToggle = true;
 
@@ -63,42 +59,6 @@ namespace DangerAlerts
         [GameParameters.CustomParameterUI("Alarm Enabled")]
         public bool collisionEnabled = true;
 
-
-#if false
-        public override void SetDifficultyPreset(GameParameters.Preset preset)
-        {
-            switch (preset)
-            {
-                case GameParameters.Preset.Easy:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-
-                case GameParameters.Preset.Normal:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-
-                case GameParameters.Preset.Moderate:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-
-                case GameParameters.Preset.Hard:
-                    toolbarEnabled = true;
-                    toolbarPopupsEnabled = true;
-                    editorMenuPopupEnabled = true;
-                    hoverTimeout = 0.5f;
-                    break;
-            }
-        }
-#endif
 
         public override bool Enabled(MemberInfo member, GameParameters parameters)
         {
