@@ -34,3 +34,7 @@
 1.4.4.4
 	Version bump for 1.7.2
 	Updated AssemblyVersion.tt for location-independent compiling
+
+1.4.5.0
+	Added InstallChecker
+	Updated for 1.8
