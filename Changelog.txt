@@ -39,3 +39,6 @@
 	Added InstallChecker
 	Updated MiniAVC to 1.4
 	Updated for 1.8
+
+1.4.5.1
+	Updated MiniAVC.dll to 1.4.0.2 to fix a nasty CTD
