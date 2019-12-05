@@ -45,3 +45,6 @@
 
 1.4.5.2
 	Really did the MiniAVC update
+
+1.4.5.3
+	Fixed initialization of vars

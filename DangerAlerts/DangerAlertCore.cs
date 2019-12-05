@@ -16,13 +16,13 @@ namespace DangerAlerts
     public class DangerAlertCore : MonoBehaviour
     {
         internal static DangerAlertCore Instance;
-        internal static string ROOT_PATH = KSPUtil.ApplicationRootPath;
-        internal static string GAMEDATA_FOLDER = ROOT_PATH + "GameData/";
+        internal static string ROOT_PATH;
+        internal static string GAMEDATA_FOLDER;
 
         internal const string SOUND_DIR = "DangerAlerts/Sounds/";
         internal static string defaultAlert = "normalAlert";
         internal static string normalAlert = "normalAlert";
-        internal AlertSoundPlayer soundplayer = new AlertSoundPlayer();
+        internal AlertSoundPlayer soundplayer;
         DangerAlertGUI dangerAlertGui;
 
         private bool inDanger = false;
@@ -32,6 +32,13 @@ namespace DangerAlerts
         private bool soundActive = true;
 
         public bool Paused = false;
+
+        void Awake()
+        {
+            ROOT_PATH = KSPUtil.ApplicationRootPath;
+            GAMEDATA_FOLDER = ROOT_PATH + "GameData/";
+            soundplayer = new AlertSoundPlayer();
+        }
 
         void Start()
         {
