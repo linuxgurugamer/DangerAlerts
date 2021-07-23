@@ -48,3 +48,7 @@
 
 1.4.5.3
 	Fixed initialization of vars
+
+1.4.5.4
+	Updated version file for 1.12
+	Updated dll for CKAN compatibility
