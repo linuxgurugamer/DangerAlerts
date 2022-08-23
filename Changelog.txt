@@ -52,3 +52,6 @@
 1.4.5.4
 	Updated version file for 1.12
 	Updated dll for CKAN compatibility
+
+1.4.5.5
+	Fixed some memory leaks

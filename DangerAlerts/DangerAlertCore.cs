@@ -54,7 +54,13 @@ namespace DangerAlerts
             GameEvents.onCrash.Add(onCrash);
 
         }
+        void OnDestroy()
+        {
+            GameEvents.onGamePause.Remove(OnPause);
+            GameEvents.onGameUnpause.Remove(OnUnpause);
+            GameEvents.onCrash.Remove(onCrash);
 
+        }
         void onCrash(EventReport evtRpt)
         {
             if (!HighLogic.CurrentGame.Parameters.CustomParams<DangerAlertsSettings>().postCrashSound)
