@@ -55,3 +55,7 @@
 
 1.4.5.5
 	Fixed some memory leaks
+
+1.4.5.6
+	Updated version file to use github for version info
+	Copied web page to README-WEB.md
